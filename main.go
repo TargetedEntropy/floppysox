@@ -18,7 +18,7 @@ import (
 )
 
 var (
-	address     = flag.String("address", "127.0.0.1:25565", "The server address")
+	address     = flag.String("address", "", "The server address")
 	name        = flag.String("name", "Daze", "The player's name")
 	playerID    = flag.String("uuid", "", "The player's UUID")
 	accessToken = flag.String("token", "", "AccessToken")
@@ -39,8 +39,8 @@ func main() {
 		return
 	}
 	log.Print("Authenticated as ", mauth.Name, " (", mauth.UUID, ")")
-	mcClient := bot.NewClient()
-	mcClient.Auth = mauth
+	client := bot.NewClient()
+	client.Auth = mauth
 
 	player = basic.NewPlayer(client, basic.DefaultSettings, basic.EventsListener{
 		GameStart:    onGameStart,
@@ -49,6 +49,7 @@ func main() {
 		HealthChange: onHealthChange,
 		Death:        onDeath,
 	})
+
 	chatHandler = msg.New(client, player, msg.EventsHandler{
 		PlayerChatMessage: onPlayerMsg,
 	})
